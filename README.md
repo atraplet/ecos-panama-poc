@@ -1,11 +1,11 @@
 # PoC ECOS Project Panama
 
-This is PoC for calling the [Embedded Conic Solver (ECOS)](https://github.com/embotech/ecos) written in C 
+This is a PoC for calling the [Embedded Conic Solver (ECOS)](https://github.com/embotech/ecos) written in C 
 from the JVM using [Project Panama](https://openjdk.java.net/projects/panama/).
 
 ## Stubs Generation
 
-To generate the stubs, run from the project root
+To generate the stubs, from the project root run
 
 ```
 export ECOS_HOME=$HOME/ecos
