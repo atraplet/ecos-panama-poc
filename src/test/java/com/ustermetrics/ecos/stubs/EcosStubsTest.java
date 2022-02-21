@@ -20,7 +20,7 @@ class EcosStubsTest {
     }
 
     @Test
-    void ecosSolveShouldReturnOptimal() {
+    void ecosSolveShouldReturnOptimalSolution() {
         var n = 5;
         var m = 11;
         var p = 1;
@@ -63,12 +63,26 @@ class EcosStubsTest {
             var b = allocator.allocateArray(C_DOUBLE, new double[]{
                     1.
             });
-            var work = ECOS_setup(n, m, p, l, ncones, q, nex, Gpr, Gjc, Gir, Apr, Ajc, Air, c, h, b);
-            var exitFlag = ECOS_solve(work);
-            ECOS_cleanup(work, 0);
 
-            assertNotEquals(NULL, work);
+            var workAddress = ECOS_setup(n, m, p, l, ncones, q, nex, Gpr, Gjc, Gir, Apr, Ajc, Air, c, h, b);
+            assertNotEquals(NULL, workAddress);
+
+            var exitFlag = ECOS_solve(workAddress);
             assertEquals(0, exitFlag);
+
+            var workSegment = workAddress.asSegment(pwork.sizeof(), scope);
+            var xAddress = pwork.x$get(workSegment);
+            var xSegment = xAddress.asSegment(C_DOUBLE.byteSize() * n, scope);
+            var x = xSegment.toDoubleArray();
+            var tol = 1e-8;
+            assertArrayEquals(new double[]{0., 0., 1., 0., 1.08466764}, x, tol);
+
+            var infoAddress = pwork.info$get(workSegment);
+            var infoSegment = infoAddress.asSegment(stats.sizeof(), scope);
+            var pcost = stats.pcost$get(infoSegment);
+            assertEquals(-0.08, pcost, tol);
+
+            ECOS_cleanup(workAddress, 0);
         }
     }
 }
