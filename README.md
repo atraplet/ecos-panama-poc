@@ -14,17 +14,20 @@ Then from the project root run
 
 ```
 $JAVA_HOME/bin/jextract \
-        -d src/main/java \
-        -l ecos \
-        -t com.ustermetrics.ecos.stubs \
-        --source \
-        -I $ECOS_HOME/external/SuiteSparse_config \
-        --include-function ECOS_setup \
-        --include-function ECOS_solve \
-        --include-function ECOS_cleanup \
-        --include-function ECOS_ver \
-        --include-struct pwork \
-        $ECOS_HOME/include/ecos.h
+    -C "-D DLONG" \
+    -C "-D LDL_LONG" \
+    -d src/main/java \
+    -l ecos \
+    -t com.ustermetrics.ecos.stubs \
+    --source \
+    -I $ECOS_HOME/external/SuiteSparse_config \
+    --include-function ECOS_setup \
+    --include-function ECOS_solve \
+    --include-function ECOS_cleanup \
+    --include-function ECOS_ver \
+    --include-struct pwork \
+    --include-struct stats \
+    $ECOS_HOME/include/ecos.h
 ```
 
 where `JAVA_HOME` and `ECOS_HOME` should point to the JAVA HOME of the Project Panama Early-Access Build and to the
