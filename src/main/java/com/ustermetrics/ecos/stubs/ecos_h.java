@@ -17,7 +17,7 @@ public class ecos_h  {
     public static MethodHandle ECOS_setup$MH() {
         return RuntimeHelper.requireNonNull(constants$0.ECOS_setup$MH,"ECOS_setup");
     }
-    public static MemoryAddress ECOS_setup ( int n,  int m,  int p,  int l,  int ncones,  Addressable q,  int nex,  Addressable Gpr,  Addressable Gjc,  Addressable Gir,  Addressable Apr,  Addressable Ajc,  Addressable Air,  Addressable c,  Addressable h,  Addressable b) {
+    public static MemoryAddress ECOS_setup ( long n,  long m,  long p,  long l,  long ncones,  Addressable q,  long nex,  Addressable Gpr,  Addressable Gjc,  Addressable Gir,  Addressable Apr,  Addressable Ajc,  Addressable Air,  Addressable c,  Addressable h,  Addressable b) {
         var mh$ = RuntimeHelper.requireNonNull(constants$0.ECOS_setup$MH, "ECOS_setup");
         try {
             return (jdk.incubator.foreign.MemoryAddress)mh$.invokeExact(n, m, p, l, ncones, q.address(), nex, Gpr.address(), Gjc.address(), Gir.address(), Apr.address(), Ajc.address(), Air.address(), c.address(), h.address(), b.address());
@@ -28,10 +28,10 @@ public class ecos_h  {
     public static MethodHandle ECOS_solve$MH() {
         return RuntimeHelper.requireNonNull(constants$0.ECOS_solve$MH,"ECOS_solve");
     }
-    public static int ECOS_solve ( Addressable w) {
+    public static long ECOS_solve ( Addressable w) {
         var mh$ = RuntimeHelper.requireNonNull(constants$0.ECOS_solve$MH, "ECOS_solve");
         try {
-            return (int)mh$.invokeExact(w.address());
+            return (long)mh$.invokeExact(w.address());
         } catch (Throwable ex$) {
             throw new AssertionError("should not reach here", ex$);
         }
@@ -39,7 +39,7 @@ public class ecos_h  {
     public static MethodHandle ECOS_cleanup$MH() {
         return RuntimeHelper.requireNonNull(constants$0.ECOS_cleanup$MH,"ECOS_cleanup");
     }
-    public static void ECOS_cleanup ( Addressable w,  int keepvars) {
+    public static void ECOS_cleanup ( Addressable w,  long keepvars) {
         var mh$ = RuntimeHelper.requireNonNull(constants$0.ECOS_cleanup$MH, "ECOS_cleanup");
         try {
             mh$.invokeExact(w.address(), keepvars);

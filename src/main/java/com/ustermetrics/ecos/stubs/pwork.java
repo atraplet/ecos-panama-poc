@@ -10,10 +10,10 @@ import static jdk.incubator.foreign.CLinker.*;
 public class pwork {
 
     static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_INT.withName("n"),
-        C_INT.withName("m"),
-        C_INT.withName("p"),
-        C_INT.withName("D"),
+        C_LONG.withName("n"),
+        C_LONG.withName("m"),
+        C_LONG.withName("p"),
+        C_LONG.withName("D"),
         C_POINTER.withName("x"),
         C_POINTER.withName("y"),
         C_POINTER.withName("z"),
@@ -73,68 +73,68 @@ public class pwork {
     public static MemoryLayout $LAYOUT() {
         return pwork.$struct$LAYOUT;
     }
-    static final VarHandle n$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("n"));
+    static final VarHandle n$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("n"));
     public static VarHandle n$VH() {
         return pwork.n$VH;
     }
-    public static int n$get(MemorySegment seg) {
-        return (int)pwork.n$VH.get(seg);
+    public static long n$get(MemorySegment seg) {
+        return (long)pwork.n$VH.get(seg);
     }
-    public static void n$set( MemorySegment seg, int x) {
+    public static void n$set( MemorySegment seg, long x) {
         pwork.n$VH.set(seg, x);
     }
-    public static int n$get(MemorySegment seg, long index) {
-        return (int)pwork.n$VH.get(seg.asSlice(index*sizeof()));
+    public static long n$get(MemorySegment seg, long index) {
+        return (long)pwork.n$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void n$set(MemorySegment seg, long index, int x) {
+    public static void n$set(MemorySegment seg, long index, long x) {
         pwork.n$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle m$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("m"));
+    static final VarHandle m$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("m"));
     public static VarHandle m$VH() {
         return pwork.m$VH;
     }
-    public static int m$get(MemorySegment seg) {
-        return (int)pwork.m$VH.get(seg);
+    public static long m$get(MemorySegment seg) {
+        return (long)pwork.m$VH.get(seg);
     }
-    public static void m$set( MemorySegment seg, int x) {
+    public static void m$set( MemorySegment seg, long x) {
         pwork.m$VH.set(seg, x);
     }
-    public static int m$get(MemorySegment seg, long index) {
-        return (int)pwork.m$VH.get(seg.asSlice(index*sizeof()));
+    public static long m$get(MemorySegment seg, long index) {
+        return (long)pwork.m$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void m$set(MemorySegment seg, long index, int x) {
+    public static void m$set(MemorySegment seg, long index, long x) {
         pwork.m$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle p$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("p"));
+    static final VarHandle p$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("p"));
     public static VarHandle p$VH() {
         return pwork.p$VH;
     }
-    public static int p$get(MemorySegment seg) {
-        return (int)pwork.p$VH.get(seg);
+    public static long p$get(MemorySegment seg) {
+        return (long)pwork.p$VH.get(seg);
     }
-    public static void p$set( MemorySegment seg, int x) {
+    public static void p$set( MemorySegment seg, long x) {
         pwork.p$VH.set(seg, x);
     }
-    public static int p$get(MemorySegment seg, long index) {
-        return (int)pwork.p$VH.get(seg.asSlice(index*sizeof()));
+    public static long p$get(MemorySegment seg, long index) {
+        return (long)pwork.p$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void p$set(MemorySegment seg, long index, int x) {
+    public static void p$set(MemorySegment seg, long index, long x) {
         pwork.p$VH.set(seg.asSlice(index*sizeof()), x);
     }
-    static final VarHandle D$VH = $struct$LAYOUT.varHandle(int.class, MemoryLayout.PathElement.groupElement("D"));
+    static final VarHandle D$VH = $struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("D"));
     public static VarHandle D$VH() {
         return pwork.D$VH;
     }
-    public static int D$get(MemorySegment seg) {
-        return (int)pwork.D$VH.get(seg);
+    public static long D$get(MemorySegment seg) {
+        return (long)pwork.D$VH.get(seg);
     }
-    public static void D$set( MemorySegment seg, int x) {
+    public static void D$set( MemorySegment seg, long x) {
         pwork.D$VH.set(seg, x);
     }
-    public static int D$get(MemorySegment seg, long index) {
-        return (int)pwork.D$VH.get(seg.asSlice(index*sizeof()));
+    public static long D$get(MemorySegment seg, long index) {
+        return (long)pwork.D$VH.get(seg.asSlice(index*sizeof()));
     }
-    public static void D$set(MemorySegment seg, long index, int x) {
+    public static void D$set(MemorySegment seg, long index, long x) {
         pwork.D$VH.set(seg.asSlice(index*sizeof()), x);
     }
     static final VarHandle x$VH = MemoryHandles.asAddressVarHandle($struct$LAYOUT.varHandle(long.class, MemoryLayout.PathElement.groupElement("x")));
