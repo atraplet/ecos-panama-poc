@@ -10,10 +10,10 @@ import static jdk.incubator.foreign.CLinker.*;
 public class pwork {
 
     static final MemoryLayout $struct$LAYOUT = MemoryLayout.structLayout(
-        C_LONG.withName("n"),
-        C_LONG.withName("m"),
-        C_LONG.withName("p"),
-        C_LONG.withName("D"),
+        C_LONG_LONG.withName("n"),
+        C_LONG_LONG.withName("m"),
+        C_LONG_LONG.withName("p"),
+        C_LONG_LONG.withName("D"),
         C_POINTER.withName("x"),
         C_POINTER.withName("y"),
         C_POINTER.withName("z"),
