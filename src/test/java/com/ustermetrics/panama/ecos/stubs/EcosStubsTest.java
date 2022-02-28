@@ -30,6 +30,7 @@ class EcosStubsTest {
 
         try (var sc = ResourceScope.newConfinedScope()) {
             var alloc = SegmentAllocator.arenaAllocator(sc);
+
             var q = alloc.allocateArray(C_LONG_LONG, new long[]{5});
             var Gpr = alloc.allocateArray(C_DOUBLE, new double[]{-1., -0.15, -1., -0.02, -0.198997487421324, -1.,
                     -0.1, -0.16583123951776996, -0.158113883008419, -1., -0.15, -0.10552897060221729,
