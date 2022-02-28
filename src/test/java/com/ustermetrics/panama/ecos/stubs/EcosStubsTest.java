@@ -2,11 +2,7 @@ package com.ustermetrics.panama.ecos.stubs;
 
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
-import org.apache.spark.ml.linalg.DenseMatrix;
-import org.apache.spark.ml.linalg.DenseVector;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static com.ustermetrics.panama.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
@@ -14,10 +10,6 @@ import static jdk.incubator.foreign.MemoryAddress.NULL;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EcosStubsTest {
-
-    private static long[] toLongArray(int[] arr) {
-        return Arrays.stream(arr).asLongStream().toArray();
-    }
 
     @Test
     void ecosVersionIsNotEmpty() {
@@ -29,49 +21,30 @@ class EcosStubsTest {
 
     @Test
     void ecosSolveShouldReturnOptimalSolution() {
-        var c = new DenseVector(new double[]{-0.05, -0.06, -0.08, -0.06, 0.});
-        var A = new DenseMatrix(1, 5, new double[]{1., 1., 1., 1., 0.});
-        var b = new DenseVector(new double[]{1.});
-        var G = new DenseMatrix(10, 5, new double[]{
-                -1., 0., 0., 0., 0.,
-                0., -1., 0., 0., 0.,
-                0., 0., -1., 0., 0.,
-                0., 0., 0., -1., 0.,
-                0., 0., 0., 0., 1.,
-                0., 0., 0., 0., -1.,
-                -0.15, -0.02, -0.1, -0.15, 0.,
-                0., -0.198997487421324, -0.16583123951776996, -0.10552897060221729, 0.,
-                0., 0., -0.158113883008419, -0.17392527130926083, 0.,
-                0., 0., 0., -0.16159714218895202, 0.
-        }, true);
-        var h = new DenseVector(new double[]{0., 0., 0., 0., 0.2, 0., 0., 0., 0., 0.});
-
-        var n = c.size();
-        var m = h.size();
-        var p = A.numRows();
+        var n = 5;
+        var m = 10;
+        var p = 1;
         var l = 5;
-        var q = new long[]{5};
-        var ncones = q.length;
+        var ncones = 1;
         var nex = 0;
-
-        var GS = G.toSparseColMajor();
-        var AS = A.toSparseColMajor();
 
         try (var sc = ResourceScope.newConfinedScope()) {
             var alloc = SegmentAllocator.arenaAllocator(sc);
-            var qSeg = alloc.allocateArray(C_LONG_LONG, q);
-            var GprSeg = alloc.allocateArray(C_DOUBLE, GS.values());
-            var GjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(GS.colPtrs()));
-            var GirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(GS.rowIndices()));
-            var AprSeg = alloc.allocateArray(C_DOUBLE, AS.values());
-            var AjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(AS.colPtrs()));
-            var AirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(AS.rowIndices()));
-            var cSeg = alloc.allocateArray(C_DOUBLE, c.values());
-            var hSeg = alloc.allocateArray(C_DOUBLE, h.values());
-            var bSeg = alloc.allocateArray(C_DOUBLE, b.values());
+            var q = alloc.allocateArray(C_LONG_LONG, new long[]{5});
+            var Gpr = alloc.allocateArray(C_DOUBLE, new double[]{-1.0, -0.15, -1.0, -0.02, -0.198997487421324, -1.0,
+                    -0.1, -0.16583123951776996, -0.158113883008419, -1.0, -0.15, -0.10552897060221729,
+                    -0.17392527130926083, -0.16159714218895202, 1.0, -1.0});
+            var Gjc = alloc.allocateArray(C_LONG_LONG, new long[]{0, 2, 5, 9, 14, 16});
+            var Gir = alloc.allocateArray(C_LONG_LONG, new long[]{0, 6, 1, 6, 7, 2, 6, 7, 8, 3, 6, 7, 8, 9, 4, 5});
+            var Apr = alloc.allocateArray(C_DOUBLE, new double[]{1.0, 1.0, 1.0, 1.0});
+            var Ajc = alloc.allocateArray(C_LONG_LONG, new long[]{0, 1, 2, 3, 4, 4});
+            var Air = alloc.allocateArray(C_LONG_LONG, new long[]{0, 0, 0, 0});
+            var c = alloc.allocateArray(C_DOUBLE, new double[]{-0.05, -0.06, -0.08, -0.06, 0.});
+            var h = alloc.allocateArray(C_DOUBLE, new double[]{0., 0., 0., 0., 0.2, 0., 0., 0., 0.,
+                    0.});
+            var b = alloc.allocateArray(C_DOUBLE, new double[]{1.});
 
-            var workAddr = ECOS_setup(n, m, p, l, ncones, qSeg, nex, GprSeg, GjcSeg, GirSeg, AprSeg,
-                    AjcSeg, AirSeg, cSeg, hSeg, bSeg);
+            var workAddr = ECOS_setup(n, m, p, l, ncones, q, nex, Gpr, Gjc, Gir, Apr, Ajc, Air, c, h, b);
             assertNotEquals(NULL, workAddr);
 
             var exitCode = ECOS_solve(workAddr);
