@@ -31,12 +31,12 @@ class EcosStubsTest {
         try (var sc = ResourceScope.newConfinedScope()) {
             var alloc = SegmentAllocator.arenaAllocator(sc);
             var q = alloc.allocateArray(C_LONG_LONG, new long[]{5});
-            var Gpr = alloc.allocateArray(C_DOUBLE, new double[]{-1.0, -0.15, -1.0, -0.02, -0.198997487421324, -1.0,
-                    -0.1, -0.16583123951776996, -0.158113883008419, -1.0, -0.15, -0.10552897060221729,
-                    -0.17392527130926083, -0.16159714218895202, 1.0, -1.0});
+            var Gpr = alloc.allocateArray(C_DOUBLE, new double[]{-1., -0.15, -1., -0.02, -0.198997487421324, -1.,
+                    -0.1, -0.16583123951776996, -0.158113883008419, -1., -0.15, -0.10552897060221729,
+                    -0.17392527130926083, -0.16159714218895202, 1., -1.});
             var Gjc = alloc.allocateArray(C_LONG_LONG, new long[]{0, 2, 5, 9, 14, 16});
             var Gir = alloc.allocateArray(C_LONG_LONG, new long[]{0, 6, 1, 6, 7, 2, 6, 7, 8, 3, 6, 7, 8, 9, 4, 5});
-            var Apr = alloc.allocateArray(C_DOUBLE, new double[]{1.0, 1.0, 1.0, 1.0});
+            var Apr = alloc.allocateArray(C_DOUBLE, new double[]{1., 1., 1., 1.});
             var Ajc = alloc.allocateArray(C_LONG_LONG, new long[]{0, 1, 2, 3, 4, 4});
             var Air = alloc.allocateArray(C_LONG_LONG, new long[]{0, 0, 0, 0});
             var c = alloc.allocateArray(C_DOUBLE, new double[]{-0.05, -0.06, -0.08, -0.06, 0.});
