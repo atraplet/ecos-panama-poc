@@ -1,4 +1,4 @@
-package com.ustermetrics.panama.ecos;
+package com.ustermetrics.ecos;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import org.apache.spark.ml.linalg.DenseMatrix;

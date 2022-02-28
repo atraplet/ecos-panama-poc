@@ -1,8 +1,8 @@
-package com.ustermetrics.panama.ecos;
+package com.ustermetrics.ecos;
 
-import com.ustermetrics.panama.ecos.stubs.ecos_h;
-import com.ustermetrics.panama.ecos.stubs.pwork;
-import com.ustermetrics.panama.ecos.stubs.stats;
+import com.ustermetrics.ecos.stubs.stats;
+import com.ustermetrics.ecos.stubs.ecos_h;
+import com.ustermetrics.ecos.stubs.pwork;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
@@ -11,7 +11,7 @@ import org.apache.spark.ml.linalg.SparseMatrix;
 
 import java.util.Arrays;
 
-import static com.ustermetrics.panama.ecos.stubs.ecos_h.*;
+import static com.ustermetrics.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
 import static jdk.incubator.foreign.MemoryAddress.NULL;
 

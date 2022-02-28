@@ -1,10 +1,10 @@
-package com.ustermetrics.panama.ecos.stubs;
+package com.ustermetrics.ecos.stubs;
 
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
 import org.junit.jupiter.api.Test;
 
-import static com.ustermetrics.panama.ecos.stubs.ecos_h.*;
+import static com.ustermetrics.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
 import static jdk.incubator.foreign.MemoryAddress.NULL;
 import static org.junit.jupiter.api.Assertions.*;
