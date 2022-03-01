@@ -1,13 +1,10 @@
 package com.ustermetrics.ecos;
 
-import com.ustermetrics.ecos.stubs.stats;
 import com.ustermetrics.ecos.stubs.ecos_h;
 import com.ustermetrics.ecos.stubs.pwork;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
+import com.ustermetrics.ecos.stubs.stats;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
-import org.apache.spark.ml.linalg.DenseVector;
-import org.apache.spark.ml.linalg.SparseMatrix;
 
 import java.util.Arrays;
 
@@ -17,7 +14,7 @@ import static jdk.incubator.foreign.MemoryAddress.NULL;
 
 public class EcosSolver {
 
-    public record Solution(int exitCode, DenseVector solution, double cost) {
+    public record Solution(int exitCode, double[] solution, double cost) {
     }
 
     private static long[] toLongArray(int[] arr) {
@@ -30,30 +27,30 @@ public class EcosSolver {
         return toJavaString(addr);
     }
 
-    public static Solution solve(DenseVector c, SparseMatrix A, DenseVector b, SparseMatrix G, DenseVector h, int l,
-                                 IntArrayList q, int nex) {
-        var n = c.size();
-        var m = h.size();
-        var p = A.numRows();
-        var ncones = q.size();
+    public static Solution solve(double[] c, double[] Apr, int[] Ajc, int[] Air, double[] b, double[] Gpr, int[] Gjc,
+                                 int[] Gir, double[] h, int l, int[] q, int nex) {
+        var n = c.length;
+        var m = h.length;
+        var p = b.length;
+        var ncones = q.length;
 
         int exitCode;
-        DenseVector solution = null;
+        double[] solution = null;
         double cost = Double.NaN;
 
         try (var sc = ResourceScope.newConfinedScope()) {
             var alloc = SegmentAllocator.arenaAllocator(sc);
 
-            var qSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(q.toIntArray()));
-            var GprSeg = alloc.allocateArray(C_DOUBLE, G.values());
-            var GjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(G.colPtrs()));
-            var GirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(G.rowIndices()));
-            var AprSeg = alloc.allocateArray(C_DOUBLE, A.values());
-            var AjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(A.colPtrs()));
-            var AirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(A.rowIndices()));
-            var cSeg = alloc.allocateArray(C_DOUBLE, c.values());
-            var hSeg = alloc.allocateArray(C_DOUBLE, h.values());
-            var bSeg = alloc.allocateArray(C_DOUBLE, b.values());
+            var qSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(q));
+            var GprSeg = alloc.allocateArray(C_DOUBLE, Gpr);
+            var GjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(Gjc));
+            var GirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(Gir));
+            var AprSeg = alloc.allocateArray(C_DOUBLE, Apr);
+            var AjcSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(Ajc));
+            var AirSeg = alloc.allocateArray(C_LONG_LONG, toLongArray(Air));
+            var cSeg = alloc.allocateArray(C_DOUBLE, c);
+            var hSeg = alloc.allocateArray(C_DOUBLE, h);
+            var bSeg = alloc.allocateArray(C_DOUBLE, b);
 
             var workAddr = ECOS_setup(n, m, p, l, ncones, qSeg, nex, GprSeg, GjcSeg, GirSeg, AprSeg, AjcSeg, AirSeg,
                     cSeg, hSeg, bSeg);
@@ -66,7 +63,7 @@ public class EcosSolver {
                 var workSeg = workAddr.asSegment(pwork.sizeof(), sc);
                 var xAddr = pwork.x$get(workSeg);
                 var xSeg = xAddr.asSegment(C_DOUBLE.byteSize() * n, sc);
-                solution = new DenseVector(xSeg.toDoubleArray());
+                solution = xSeg.toDoubleArray();
 
                 var infoAddr = pwork.info$get(workSeg);
                 var infoSeg = infoAddr.asSegment(stats.sizeof(), sc);
