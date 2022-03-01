@@ -55,7 +55,7 @@ class EcosStubsTest {
             var xAddr = pwork.x$get(workSeg);
             var xSeg = xAddr.asSegment(C_DOUBLE.byteSize() * n, sc);
             var x = xSeg.toDoubleArray();
-            var tol = 2.220446e-16; // Normal machine epsilon
+            var tol = Math.ulp(1.0); // Machine epsilon
             assertArrayEquals(new double[]{0.24879020572078372, 0.049684806182020855, 0.7015249845663684,
                     3.5308169265756875e-09, 0.19999999978141014}, x, tol);
 
