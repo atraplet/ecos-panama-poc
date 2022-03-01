@@ -1,6 +1,5 @@
 package com.ustermetrics.ecos;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import org.apache.spark.ml.linalg.DenseMatrix;
 import org.apache.spark.ml.linalg.DenseVector;
 import org.junit.jupiter.api.Test;
@@ -35,15 +34,19 @@ class EcosSolverTest {
         }, true);
         var h = new DenseVector(new double[]{0., 0., 0., 0., 0.2, 0., 0., 0., 0., 0.});
         var l = 5;
-        var q = new IntArrayList(new int[]{5});
+        var q = new int[]{5};
         var nex = 0;
 
-        var solution = EcosSolver.solve(c, A.toSparseColMajor(), b, G.toSparseColMajor(), h, l, q, nex);
+        var As = A.toSparseColMajor();
+        var Gs = G.toSparseColMajor();
+
+        var solution = EcosSolver.solve(c.values(), As.values(), As.colPtrs(), As.rowIndices(), b.values(),
+                Gs.values(), Gs.colPtrs(), Gs.rowIndices(), h.values(), l, q, nex);
 
         assertEquals(0, solution.exitCode());
-        var tol = 2.220446e-16; // Normal machine epsilon
+        var tol = Math.ulp(1.0); // Machine epsilon
         assertArrayEquals(new double[]{0.24879020572078372, 0.049684806182020855, 0.7015249845663684,
-                3.5308169265756875e-09, 0.19999999978141014}, solution.solution().toArray(), tol);
+                3.5308169265756875e-09, 0.19999999978141014}, solution.solution(), tol);
         assertEquals(-0.07154259763411892, solution.cost(), tol);
     }
 }
