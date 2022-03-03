@@ -4,9 +4,15 @@ import org.apache.spark.ml.linalg.DenseMatrix;
 import org.apache.spark.ml.linalg.DenseVector;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EcosSolverTest {
+
+    private static long[] toLongArray(int[] arr) {
+        return Arrays.stream(arr).asLongStream().toArray();
+    }
 
     @Test
     void ecosVersionIsNotEmpty() {
@@ -34,14 +40,15 @@ class EcosSolverTest {
         }, true);
         var h = new DenseVector(new double[]{0., 0., 0., 0., 0.2, 0., 0., 0., 0., 0.});
         var l = 5;
-        var q = new int[]{5};
+        var q = new long[]{5};
         var nex = 0;
 
         var As = A.toSparseColMajor();
         var Gs = G.toSparseColMajor();
 
-        var solution = EcosSolver.solve(c.values(), As.values(), As.colPtrs(), As.rowIndices(), b.values(),
-                Gs.values(), Gs.colPtrs(), Gs.rowIndices(), h.values(), l, q, nex);
+        var solution = EcosSolver.solve(c.values(), As.values(), toLongArray(As.colPtrs()),
+                toLongArray(As.rowIndices()), b.values(), Gs.values(), toLongArray(Gs.colPtrs()),
+                toLongArray(Gs.rowIndices()), h.values(), l, q, nex);
 
         assertEquals(0, solution.exitCode());
         var tol = Math.ulp(1.0); // Machine epsilon
