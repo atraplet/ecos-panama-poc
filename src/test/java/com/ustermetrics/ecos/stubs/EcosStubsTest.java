@@ -1,8 +1,12 @@
 package com.ustermetrics.ecos.stubs;
 
+import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.FunctionDescriptor;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
 import org.junit.jupiter.api.Test;
+
+import java.lang.invoke.MethodType;
 
 import static com.ustermetrics.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
@@ -10,6 +14,23 @@ import static jdk.incubator.foreign.MemoryAddress.NULL;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EcosStubsTest {
+
+    @Test
+    void panamaSmokeTest() throws Throwable {
+        var os = System.getProperty("os.name");
+        var getpidFunctionName = os.startsWith("Windows") ? "_getpid" : "getpid";
+
+        var linker = CLinker.getInstance();
+        var lookup = CLinker.systemLookup();
+        var symbol = lookup.lookup(getpidFunctionName).orElseThrow();
+        var type = MethodType.methodType(int.class);
+        var function = FunctionDescriptor.of(CLinker.C_INT);
+        var getpid = linker.downcallHandle(symbol, type, function);
+
+        var pid = (int) getpid.invokeExact();
+
+        assertTrue(pid > 0);
+    }
 
     @Test
     void ecosVersionIsNotEmpty() {
