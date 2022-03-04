@@ -18,16 +18,15 @@ class EcosStubsTest {
     @Test
     void panamaSmokeTest() throws Throwable {
         var os = System.getProperty("os.name");
-        var name = os.startsWith("Windows") ? "_getpid" : "getpid";
-
+        var getpidFuncName = os.startsWith("Windows") ? "_getpid" : "getpid";
         var linker = CLinker.getInstance();
         var lookup = CLinker.systemLookup();
-        var symbol = lookup.lookup(name).orElseThrow();
-        var type = MethodType.methodType(int.class);
-        var function = FunctionDescriptor.of(CLinker.C_INT);
-        var getpid = linker.downcallHandle(symbol, type, function);
+        var getpidSymbol = lookup.lookup(getpidFuncName).orElseThrow();
+        var getpidType = MethodType.methodType(int.class);
+        var getpidFuncDesc = FunctionDescriptor.of(CLinker.C_INT);
+        var getpidHandle = linker.downcallHandle(getpidSymbol, getpidType, getpidFuncDesc);
 
-        var pid = (int) getpid.invokeExact();
+        var pid = (int) getpidHandle.invokeExact();
 
         assertTrue(pid > 0);
     }
