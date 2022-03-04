@@ -6,6 +6,8 @@ import com.ustermetrics.ecos.stubs.stats;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.SegmentAllocator;
 
+import java.util.Arrays;
+
 import static com.ustermetrics.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
 import static jdk.incubator.foreign.MemoryAddress.NULL;
@@ -13,6 +15,15 @@ import static jdk.incubator.foreign.MemoryAddress.NULL;
 public class EcosSolver {
 
     public record Solution(long exitCode, double[] solution, double cost) {
+
+        @Override
+        public String toString() {
+            return "Solution{" +
+                    "exitCode=" + exitCode +
+                    ", solution=" + Arrays.toString(solution) +
+                    ", cost=" + cost +
+                    '}';
+        }
     }
 
     public static String version() {
