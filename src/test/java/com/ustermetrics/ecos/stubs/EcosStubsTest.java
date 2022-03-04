@@ -7,6 +7,7 @@ import jdk.incubator.foreign.SegmentAllocator;
 import org.junit.jupiter.api.Test;
 
 import java.lang.invoke.MethodType;
+import java.util.Arrays;
 
 import static com.ustermetrics.ecos.stubs.ecos_h.*;
 import static jdk.incubator.foreign.CLinker.*;
@@ -28,6 +29,7 @@ class EcosStubsTest {
 
         var pid = (int) getpidHandle.invokeExact();
 
+        System.out.println("Process id: " + pid);
         assertTrue(pid > 0);
     }
 
@@ -36,6 +38,7 @@ class EcosStubsTest {
         var addr = ecos_h.ECOS_ver();
         var ver = toJavaString(addr);
 
+        System.out.println("Version: " + ver);
         assertFalse(ver.isEmpty());
     }
 
@@ -69,12 +72,14 @@ class EcosStubsTest {
             assertNotEquals(NULL, workAddr);
 
             var exitCode = ECOS_solve(workAddr);
+            System.out.println("Exit code: " + exitCode);
             assertEquals(0, exitCode);
 
             var workSeg = workAddr.asSegment(pwork.sizeof(), sc);
             var xAddr = pwork.x$get(workSeg);
             var xSeg = xAddr.asSegment(C_DOUBLE.byteSize() * n, sc);
             var x = xSeg.toDoubleArray();
+            System.out.println("Solution: " + Arrays.toString(x));
             var tol = Math.ulp(1.0); // Machine epsilon
             assertArrayEquals(new double[]{0.24879020572078372, 0.049684806182020855, 0.7015249845663684,
                     3.5308169265756875e-09, 0.19999999978141014}, x, tol);
@@ -82,6 +87,7 @@ class EcosStubsTest {
             var infoAddr = pwork.info$get(workSeg);
             var infoSeg = infoAddr.asSegment(stats.sizeof(), sc);
             var pcost = stats.pcost$get(infoSeg);
+            System.out.println("Cost: " + pcost);
             assertEquals(-0.07154259763411892, pcost, tol);
 
             ECOS_cleanup(workAddr, 0);
