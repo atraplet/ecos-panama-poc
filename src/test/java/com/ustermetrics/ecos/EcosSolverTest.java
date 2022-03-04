@@ -18,6 +18,7 @@ class EcosSolverTest {
     void ecosVersionIsNotEmpty() {
         var version = EcosSolver.version();
 
+        System.out.println("Version: " + version);
         assertFalse(version.isEmpty());
     }
 
@@ -50,6 +51,7 @@ class EcosSolverTest {
                 toLongArray(As.rowIndices()), b.values(), Gs.values(), toLongArray(Gs.colPtrs()),
                 toLongArray(Gs.rowIndices()), h.values(), l, q, nex);
 
+        System.out.println(solution);
         assertEquals(0, solution.exitCode());
         var tol = Math.ulp(1.0); // Machine epsilon
         assertArrayEquals(new double[]{0.24879020572078372, 0.049684806182020855, 0.7015249845663684,
