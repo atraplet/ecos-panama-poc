@@ -10,6 +10,7 @@ import java.lang.invoke.MethodType;
 import java.util.Arrays;
 
 import static com.ustermetrics.ecos.stubs.ecos_h.*;
+import static com.ustermetrics.getpid.stubs.getpid_h.getpid;
 import static jdk.incubator.foreign.CLinker.*;
 import static jdk.incubator.foreign.MemoryAddress.NULL;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,14 +19,21 @@ class EcosStubsTest {
 
     @Test
     void panamaSmokeTest() throws Throwable {
-        var os = System.getProperty("os.name");
-        var getpidFuncName = os.startsWith("Windows") ? "_getpid" : "getpid";
+        var getpidFuncName = System.getProperty("os.name").startsWith("Windows") ? "_getpid" : "getpid";
         var getpidSymbol = CLinker.systemLookup().lookup(getpidFuncName).orElseThrow();
         var getpidType = MethodType.methodType(int.class);
         var getpidFuncDesc = FunctionDescriptor.of(CLinker.C_INT);
         var getpidHandle = CLinker.getInstance().downcallHandle(getpidSymbol, getpidType, getpidFuncDesc);
 
         var pid = (int) getpidHandle.invokeExact();
+
+        System.out.println("Process id: " + pid);
+        assertTrue(pid > 0);
+    }
+
+    @Test
+    void jextractSmokeTest() {
+        var pid = getpid();
 
         System.out.println("Process id: " + pid);
         assertTrue(pid > 0);
