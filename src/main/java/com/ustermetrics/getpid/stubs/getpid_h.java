@@ -13,6 +13,17 @@ public class getpid_h  {
     }
 
     static final SymbolLookup LIBRARIES = RuntimeHelper.lookup();    /* package-private */ getpid_h() {}
+    public static MethodHandle _getpid$MH() {
+        return RuntimeHelper.requireNonNull(constants$0._getpid$MH,"_getpid");
+    }
+    public static int _getpid (Object... x0) {
+        var mh$ = RuntimeHelper.requireNonNull(constants$0._getpid$MH, "_getpid");
+        try {
+            return (int)mh$.invokeExact(x0);
+        } catch (Throwable ex$) {
+            throw new AssertionError("should not reach here", ex$);
+        }
+    }
     public static MethodHandle getpid$MH() {
         return RuntimeHelper.requireNonNull(constants$0.getpid$MH,"getpid");
     }
