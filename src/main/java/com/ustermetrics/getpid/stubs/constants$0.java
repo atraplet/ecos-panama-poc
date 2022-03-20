@@ -9,12 +9,6 @@ import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.CLinker.*;
 class constants$0 {
 
-    static final FunctionDescriptor _getpid$FUNC = FunctionDescriptor.of(C_INT);
-    static final MethodHandle _getpid$MH = RuntimeHelper.downcallHandle(
-        getpid_h.LIBRARIES, "_getpid",
-        "([Ljava/lang/Object;)I",
-        constants$0._getpid$FUNC, true
-    );
     static final FunctionDescriptor getpid$FUNC = FunctionDescriptor.of(C_INT);
     static final MethodHandle getpid$MH = RuntimeHelper.downcallHandle(
         getpid_h.LIBRARIES, "getpid",
