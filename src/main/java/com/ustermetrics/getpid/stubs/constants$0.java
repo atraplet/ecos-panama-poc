@@ -9,9 +9,12 @@ import jdk.incubator.foreign.*;
 import static jdk.incubator.foreign.CLinker.*;
 class constants$0 {
 
+    // Manual change to handle platform specific name
+    private static final String GETPID_FUNC_NAME = System.getProperty("os.name").startsWith("Windows") ? "_getpid" : "getpid";
+
     static final FunctionDescriptor getpid$FUNC = FunctionDescriptor.of(C_INT);
     static final MethodHandle getpid$MH = RuntimeHelper.downcallHandle(
-        getpid_h.LIBRARIES, "getpid",
+        getpid_h.LIBRARIES, GETPID_FUNC_NAME,
         "([Ljava/lang/Object;)I",
         constants$0.getpid$FUNC, true
     );
